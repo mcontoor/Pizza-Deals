@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Pizza = require("../models/pizza");
 const User = require("../models/user");
 const Company = require("../models/company");
+const Offer = require("../models/offer");
 
 router.get("/", async (req, res) => {
   const data = await Pizza.find({});
@@ -36,11 +37,22 @@ router.get("/company", async (req, res) => {
 router.post("/checkout", (req, res) => {
   const data = req.body;
   var items = data.items;
-  var count = 0;
+  let count = 0;
   for (var i = 0; i < items.length; i++)
     if (items[i] === "small pizza") {
-      count++;
+      count = count + 1;
     }
+  Offer.findOne({ company: "Infosys" })
+    .populate("pizza")
+    .exec(function(err, data) {
+      if (err) throw err;
+      console.log(data);
+    });
+});
+
+router.get("/offer", async (req, res) => {
+  const data = await Offer.find({});
+  res.json(data);
 });
 
 module.exports = router;

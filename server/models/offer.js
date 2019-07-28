@@ -1,11 +1,10 @@
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema();
+var Schema = mongoose.Schema;
 require("mongoose-function")(mongoose);
 
 var offerSchema = new Schema({
   company: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Company",
+    type: String,
     required: true
   },
   pizza: {
@@ -14,7 +13,8 @@ var offerSchema = new Schema({
     required: true
   },
   offer: {
-    type: Function,
+    _id: "total",
+    value: Function,
     required: true
   }
 });

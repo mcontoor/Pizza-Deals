@@ -8,14 +8,26 @@ mongoose
 
 var Offers = [
   new Offer({
-    company: ObjectId("5d3d9ceab939cd22cb1e5638"),
-    pizza: ObjectId("5d3d98ad94a1a819c65ffdf5"),
-    offer: function(company, count, price) {
-      if (company === "Infosys") {
-        if (count === 3) {
-          return 2 * price;
-        }
+    company: "Infosys",
+    pizza: "5d3d98ad94a1a819c65ffdf5",
+    offer: function(count, price) {
+      if (count === 3) {
+        return 2 * price;
       }
     }
   })
 ];
+
+var done = 0;
+for (var i = 0; i < Offers.length; i++) {
+  Offers[i].save((err, result) => {
+    done++;
+    if (done === Offers.length) {
+      exit();
+    }
+  });
+}
+
+function exit() {
+  mongoose.disconnect();
+}
