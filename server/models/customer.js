@@ -1,11 +1,11 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-const companySchema = new Schema({
+var customerSchema = new Schema({
   name: {
     type: String,
     required: true
   }
 });
 
-module.exports = mongoose.model("Company", companySchema);
+module.exports = mongoose.model("Customer", customerSchema);

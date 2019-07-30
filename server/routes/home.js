@@ -1,58 +1,52 @@
+const Customer = require("../models/customer");
+const Product = require("../models/product");
+const PriceDeal = require("../models/priceDeals");
+const QtyDeal = require("../models/qtyDeal");
+const Cart = require("../models/cart");
 const router = require("express").Router();
-const Pizza = require("../models/pizza");
-const User = require("../models/user");
-const Company = require("../models/company");
-const Offer = require("../models/offer");
 
 router.get("/", async (req, res) => {
-  const data = await Pizza.find({});
+  const data = await Product.find({});
   res.json(data);
 });
 
-router.post("/pizza", (req, res) => {
-  var pizza = new Pizza();
+// router.post("/checkout", (req, res) => {
+//   const data = req.body;
+//   var items = data.items;
+//   let count = 0;
+//   for (var i = 0; i < items.length; i++)
+//     if (items[i] === "small pizza") {
+//       count = count + 1;
+//     }
+//   Offer.findOne({ company: "Infosys" })
+//     .populate("pizza")
+//     .exec(function(err, data) {
+//       if (err) throw err;
+//       console.log(data);
+//     });
+// });
 
-  pizza.name = req.body.name;
-  pizza.description = req.body.description;
-  pizza.price = req.body.price;
+router.get("/cart/:id", async (req, res) => {
+  // res.send(req.session);
+  const id = req.params.id;
 
-  pizza.save().then(() => console.log(pizza));
-});
+  var cart = await new Cart(
+    req.session.cart ? req.session.cart : { items: {} }
+  );
+  const data = await Product.findOne({ _id: id });
+  console.log(data);
+  // res.json(req.session);
+  cart.add(data, id);
+  // res.json(cart);
+  req.session.cart = cart;
+  res.json(req.session.cart);
 
-router.post("/user", (req, res) => {
-  var user = new User({
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-    company: req.body.company
-  });
-  user.save().then(() => console.log(user));
-});
-
-router.get("/company", async (req, res) => {
-  const data = await Company.find({});
-  res.json(data);
-});
-
-router.post("/checkout", (req, res) => {
-  const data = req.body;
-  var items = data.items;
-  let count = 0;
-  for (var i = 0; i < items.length; i++)
-    if (items[i] === "small pizza") {
-      count = count + 1;
-    }
-  Offer.findOne({ company: "Infosys" })
-    .populate("pizza")
-    .exec(function(err, data) {
-      if (err) throw err;
-      console.log(data);
-    });
-});
-
-router.get("/offer", async (req, res) => {
-  const data = await Offer.find({});
-  res.json(data);
+  //   QtyDeal.find({})
+  //     .populate({ path: "Product", select: "name" })
+  //     .exec((err, data) => {
+  //       if (err) throw err;
+  //       console.log(data);
+  //     });
 });
 
 module.exports = router;

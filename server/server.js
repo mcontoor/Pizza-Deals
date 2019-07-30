@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const home = require("./routes/home");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 app.use(bodyParser.json());
 app.use(
@@ -11,6 +13,20 @@ app.use(
   })
 );
 app.use(cors());
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "cats",
+    saveUninitialized: true,
+    resave: true
+  })
+);
+
+app.use(function(req, res, next) {
+  // res.locals.login = req.isAuthenticated();
+  res.locals.session = req.session;
+  next();
+});
 
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);

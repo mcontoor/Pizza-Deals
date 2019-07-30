@@ -9,11 +9,19 @@ class Pizzas extends Component {
     };
   }
 
+  onSubmit = _id => {
+    // axios
+    //   .get(`http://localhost:5001/cart/${_id}`)
+    //   .then(console.log(`${_id} added to cart`))
+    //   .catch(e => console.log(e));
+    console.log(_id);
+  };
+
   componentDidMount() {
     axios
       .get("http://localhost:5001/")
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           pizzas: res.data
         });
@@ -27,7 +35,7 @@ class Pizzas extends Component {
       <div>
         <ul>
           {pizzas.map(pizza => (
-            <li key={pizza._id}>
+            <li key={1}>
               <span>
                 {pizza.name}
                 <br />
@@ -37,7 +45,9 @@ class Pizzas extends Component {
                 <br />
               </span>
               <span>${pizza.price}</span>
-              <button type="submit">Add</button>
+              <button onClick={this.onSubmit(pizza._id)} type="submit">
+                Add
+              </button>
             </li>
           ))}
         </ul>
