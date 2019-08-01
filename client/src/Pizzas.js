@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+
 class Pizzas extends Component {
   constructor() {
     super();
@@ -9,12 +10,13 @@ class Pizzas extends Component {
     };
   }
 
-  onSubmit = _id => {
-    // axios
-    //   .get(`http://localhost:5001/cart/${_id}`)
-    //   .then(console.log(`${_id} added to cart`))
-    //   .catch(e => console.log(e));
-    console.log(_id);
+  onSubmit = (_id, e) => {
+    e.preventDefault();
+    axios
+      .get(`http://localhost:5001/add/cart/${_id}`)
+      .then(console.log(`${_id} added to cart`))
+      .catch(err => console.log(err));
+
   };
 
   componentDidMount() {
@@ -35,7 +37,7 @@ class Pizzas extends Component {
       <div>
         <ul>
           {pizzas.map(pizza => (
-            <li key={1}>
+            <li key={pizza._id}>
               <span>
                 {pizza.name}
                 <br />
@@ -45,15 +47,19 @@ class Pizzas extends Component {
                 <br />
               </span>
               <span>${pizza.price}</span>
-              <button onClick={this.onSubmit(pizza._id)} type="submit">
+              <button onClick={(e) => this.onSubmit(pizza._id, e)} type="submit">
                 Add
               </button>
             </li>
           ))}
         </ul>
+
       </div>
     );
   }
 }
+
+
+
 
 export default Pizzas;

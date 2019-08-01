@@ -1,20 +1,17 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import Login from "./Login";
-import Pizzas from "./Pizzas";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Header from "./Header";
+import Home from "./Home";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function App() {
   return (
     <Router>
+      <Header />
       <div className="App">
-        <h1>Pizzas!</h1>
-        <Switch>
-          <Route exact path="/" component={Pizzas} />
-          <Route exaxt path="/Login" component={Login}>
-            <Link to="/login">Login</Link>
-          </Route>
-        </Switch>
+        <Route exact path="/" component={Home} />
       </div>
     </Router>
   );
